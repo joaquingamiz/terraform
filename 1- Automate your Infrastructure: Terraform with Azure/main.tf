@@ -1,42 +1,42 @@
-resource "azurerm_resource_group" "example" {
+resource "azurerm_resource_group" "resource_group_testjg" {
   name     = var.resource_group_name
   location = var.location
 }
 
-resource "azurerm_virtual_network" "example" {
-  name                = "example-vnet"
+resource "azurerm_virtual_network" "virtual_network_testjg" {
+  name                = "vnetjg"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.resource_group_testjg.name
 }
 
-resource "azurerm_subnet" "example" {
-  name                 = "example-subnet"
-  resource_group_name  = azurerm_resource_group.example.name
-  virtual_network_name = azurerm_virtual_network.example.name
+resource "azurerm_subnet" "subnet_testjg" {
+  name                 = "subnetjg"
+  resource_group_name  = azurerm_resource_group.resource_group_testjg.name
+  virtual_network_name = azurerm_virtual_network.virtual_network_testjg.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+resource "azurerm_network_interface" "net_interfacejg" {
+  name                = "nicjg"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.resource_group_testjg.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
+    subnet_id                     = azurerm_subnet.subnet_testjg.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_windows_virtual_machine" "example" {
-  name                = "example-vm"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+resource "azurerm_windows_virtual_machine" "w11jg" {
+  name                = "w11jg-vm"
+  resource_group_name = azurerm_resource_group.resource_group_testjg.name
+  location            = var.location
   size                = "Standard_B2s"
   admin_username      = "adminuser"
   admin_password      = var.admin_password
-  network_interface_ids = [azurerm_network_interface.example.id]
+  network_interface_ids = [azurerm_network_interface.net_interfacejg.id]
 
   os_disk {
     name              = "osdisk-example"
@@ -45,9 +45,9 @@ resource "azurerm_windows_virtual_machine" "example" {
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2019-Datacenter"
+    publisher = "MicrosoftWindowsDesktop"
+    offer     = "windows-11"
+    sku       = "win11-22h2-pro"
     version   = "latest"
   }
 }
