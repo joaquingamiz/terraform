@@ -1,3 +1,8 @@
+variable "subscription_id" {
+  description = "Id de la suscripción de Azure"
+  type        = string
+  default     = ""
+}
 variable "resource_group_name" {
   description = "Nombre del grupo de recursos"
   type        = string
@@ -13,7 +18,8 @@ variable "location" {
 variable "admin_password" {
   description = "Contraseña del usuario administrador de la VM"
   type        = string
-  sensitive   = true 
+  default     = ""
+  /*sensitive   = true */ 
 }
 
 variable "vm_size" {
